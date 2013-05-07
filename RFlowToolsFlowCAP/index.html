@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Highlights of R-based Flow Cytometry Tools:FlowCAP</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Highlights of R-based Flow Cytometry Tools:FlowCAP">
+  <meta name="author" content="Greg Finak, PhD">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+    <link rel="stylesheet" href = "assets/css/default.css">
+<link rel="stylesheet" href = "assets/css/fonts.css">
+<link rel="stylesheet" href = "assets/css/phone.css">
+<link rel="stylesheet" href = "assets/css/ribbons.css">
+<link rel="stylesheet" href = "assets/css/slidify.css">
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    <!-- END LOGO SLIDE -->
+    
+
+    <!-- TITLE SLIDE -->
+    <!-- Should I move this to a Local Layout File? -->
+    <slide class="title-slide segue nobackground">
+      <hgroup class="auto-fadein">
+        <h1>Highlights of R-based Flow Cytometry Tools:FlowCAP</h1>
+        <h2>Advanced Data Analysis Course, Cyto 2013, San Diego, CA</h2>
+        <p>Greg Finak, PhD<br/>Staff Scientist, Vaccine and Infectious Disease Division <br/> Fred Hutchinson Cancer Research Center, Seattle, WA</p>
+      </hgroup>
+          </slide>
+
+    <!-- SLIDES -->
+      <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Overview</h2>
+  </hgroup>
+  <article>
+    <blockquote>
+<h3>New Core R Software Infrastrucutre for Flow Cytometry</h3>
+
+<ul>
+<li><em>ncdfFlow</em>: NetCDF, high-performace, disk-based access to large flow data sets.</li>
+<li><em>flowWorkspace</em>: FlowJo workspace support. Import and reproduce FlowJo manual gating from wsp and xml files.</li>
+<li><em>OpenCyto</em>: Template-based, data-driven, automated hierarchical gating.</li>
+</ul>
+
+<h3>FlowCAP III - 2012</h3>
+
+<ul>
+<li>FlowCAP Challenges 
+
+<ul>
+<li>Automated gating of standardized <strong>Lyoplate-based</strong> flow cytometry data.</li>
+<li>Prediction of vaccination status in a clinical trial ICS data set.</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>R Tools for Flow Cytometry Data Analysis</h2>
+  </hgroup>
+  <article>
+    <p>R provides a suite of free, open-source tools for flow cyotometry <em>data analysis</em>.</p>
+
+<ul>
+<li>Storage, preprocessing, transformation, compensation, gating.</li>
+</ul>
+
+<p><img src="assets/img/CytometryWorkflow.png", style="height: auto; max-width: 100%; width: auto;"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>ncdfFlow</h2>
+  </hgroup>
+  <article>
+    <p><a href="http://www.unidata.ucar.edu/software/netcdf/">NetCDF</a>-based storage of large flow cytometry data sets.</p>
+
+<p><em><a href="http://www.github.com/RGLab/ncdfFlow">http://www.github.com/RGLab/ncdfFlow</a></em> (<a href="http://bioconductor.org/packages/2.12/bioc/html/ncdfFlow.html">Bioconductor</a>)</p>
+
+<ul>
+<li>Data remains on disk - accessed as if in memory - small RAM footprint.</li>
+<li>Handles large studies (1000&#39;s of FCS files).
+
+<ul>
+<li><em>e.g.</em> 34 FCS files from one lyoplate panel from nine sites.</li>
+</ul></li>
+</ul>
+
+<pre><code class="r">f &lt;- list.files(path=&quot;./Data/T-cell FCS files/&quot;,pattern=&quot;fcs&quot;,recursive=TRUE,full=TRUE)
+dat&lt;-read.ncdfFlowSet(f,ncdfFile=&quot;./myncfile&quot;)
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Data Object</th>
+<th>Size</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>R object</td>
+<td>69.19 Kb</td>
+</tr>
+<tr>
+<td>NetCDF Data file</td>
+<td>662.74 Mb</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>flowWorkspace</h2>
+  </hgroup>
+  <article>
+    <p><em><a href="http://www.github.com/RGLab/flowWorkspace">http://www.github.com/RGLab/flowWorkspace</a></em> (<a href="http://bioconductor.org/packages/2.12/bioc/html/flowWorkspace.html">Bioconductor</a>)<br>
+Reproduce FlowJo gating in <em>R</em> from an exported workspace.</p>
+
+
+<div style='float:left;width:48%;' class='centered'>
+  <pre><code class="custom">ws&lt;-openWorkspace(&quot;./Data/Centralized T-cell.xml&quot;);
+G&lt;-parseWorkspace(ws);
+plotGate(G[[1]],&quot;CD3&quot;); #Plot CD3 gate
+plot(G[[1]]);           #Plot gating hierarchy
+</code></pre>
+
+<p><img src="figure/plotws2.png", style="width: 100%; max-height: 50%; height: auto;"></p>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <p><img src="figure/plotws1.png",  style="width: 100%; max-height=50%;"></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>OpenCyto</h2>
+  </hgroup>
+  <article>
+    <p><em><a href="http://www.github.com/RGLab/openCyto">http://www.github.com/RGLab/openCyto</a></em></p>
+
+<p>Integrates <em>flowWorkspace</em> infrastructure with automated gating tools (<em>Bayesian flowClust</em>, <em>flowCore</em>, others)</p>
+
+<ul>
+<li>Modular framework: plug-in your own gating algorithms</li>
+<li>Template-based automated gating
+
+<ul>
+<li>User-defined template describes a <em>hierarchy</em> of cell population hierarchy and relevant markers</li>
+<li>Gating is <em>data-driven</em>. (User doesn&#39;t define any gates)</li>
+<li>Higher-dimensional gating (e.g. &gt;2D)  <em>is</em> available.</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>OpenCyto</h2>
+  </hgroup>
+  <article>
+    <h3>Example CSV Gating Template Definition (B-cell Panel)</h3>
+
+<table><thead>
+<tr>
+<th>Alias</th>
+<th>population</th>
+<th>parent</th>
+<th>dims</th>
+<th>method</th>
+<th>options</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>nonDebris</td>
+<td>nonDebris+</td>
+<td>root</td>
+<td>FSC-A</td>
+<td>flowClust</td>
+<td>min=0</td>
+</tr>
+<tr>
+<td>singlets</td>
+<td>singlets+</td>
+<td>nonDebris</td>
+<td>FSC-A,SSC-A</td>
+<td>singletGate</td>
+<td></td>
+</tr>
+<tr>
+<td>lymph</td>
+<td>lymph</td>
+<td>singlets</td>
+<td>FSC-A,SSC-A</td>
+<td>flowClust</td>
+<td>K=3,quantile=0.95,target=c(1e5,5e4)</td>
+</tr>
+<tr>
+<td>CD3</td>
+<td>CD3+</td>
+<td>lymph</td>
+<td>CD3</td>
+<td>flowClust</td>
+<td>K=3,neg=2</td>
+</tr>
+<tr>
+<td>CD4</td>
+<td>CD4+</td>
+<td>CD3</td>
+<td>CD4,SSC-A</td>
+<td>flowClust</td>
+<td></td>
+</tr>
+<tr>
+<td>CD8</td>
+<td>CD8+</td>
+<td>CD3</td>
+<td>CD8,SSC-A</td>
+<td>flowClust</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3>R Code to Run the Gating</h3>
+
+<pre><code class="custom2">template&lt;-gatingTemplate(&quot;bcellTemplate.csv&quot;)
+fs&lt;-readFlowSet(file=&quot;Data/Bcells/&quot;)
+gs&lt;-GatingSet(fs)
+G&lt;-gating(template,gs)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>FlowCAP: Critical Assessment of Cell Population Identification Methods</h2>
+  </hgroup>
+  <article>
+    <p>Three-year old series of workshops for benchmarking automated gating methods vs. manual gating</p>
+
+
+<div style='float:left;width:48%;' class='centered'>
+  <h3><strong>FlowCAP I and II</strong></h3>
+
+<p>Focus on high dimensional automated gating.<br>
+<img src="assets/img/NatMethods.png", width=400px, align=center></p>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <h3><strong>FlowCAP III</strong></h3>
+
+<p>Focus on reproducibility, applicability to clinical trials.</p>
+
+<ul>
+<li>Reproduce cell population statistics from standardized Lyoplate data with minimum variability and bias.</li>
+<li>Predict vaccination status from ICS data.</li>
+</ul>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Standardized Lyoplate Staining Panels</h2>
+  </hgroup>
+  <article>
+    <div>
+<img src="assets/img/LyoplateStainingPanels.png", style="width: auto; height: auto; max-width: 100%;">
+</div>
+
+<div style="text-align: right; color: black; font-size: 18px;">Maecker, McCoy, Nussenblatt, Nat Rev Immunol, 2012</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>FlowCAP III: Lyoplate Standardized Gating</h2>
+  </hgroup>
+  <article>
+    <p><strong>Identify Gating Methods with low variability and bias relative to centralized manual gating</strong></p>
+
+<p><img src="assets/img/TcellScheme.png", style="max-height: 35%; max-width: 50%;"><img src="assets/img/BcellScheme.png", style="max-width: 50%; max-height: 35%;"></p>
+
+<ul>
+<li>FlowCAP focused on the T-cell and B-cell panels.</li>
+<li>9 sites, 4 replicates of cryopreserved cells per site. </li>
+<li>Local, central, and automated gating.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Centralized Gating Reduces Cell Population Variability</h2>
+  </hgroup>
+  <article>
+    <p><img style="width:100%;", src="assets/img/combined_local_central_cv_plot.png"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Participants</h2>
+  </hgroup>
+  <article>
+    <h3><em>DENSE</em> ( A. Brandes, Broad Institute )</h3>
+
+<h3><em>flowDensity</em> ( J. Taghiyar, BC Cancer Agency )</h3>
+
+<h3><em>OpenCyto</em> ( J. Ramey, FHCRC )</h3>
+
+<h3><em>emcytom</em> ( K. Wang, University of Queensland )</h3>
+
+<h3><em>FLOCK</em> ( R. Stanton, JCVI )</h3>
+
+<h3><em>Centralized Gating</em> ( Current best practice )</h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>FlowCAP III Gating Evaluation Criteria</h2>
+  </hgroup>
+  <article>
+    <p>Assess <em>automated methods</em> relative to <em>central manual gating</em>.</p>
+
+<ul>
+<li><strong>Variability</strong>
+
+<ul>
+<li>Coefficients of variation across centers</li>
+</ul></li>
+<li><strong>Bias:</strong>
+\(RMSD_{gpc} = \sqrt{\frac{\sum(y_{gcpr}-\mu_{mpc})}{R}}\)</li>
+<li><strong>Mixed Effects Model:</strong>
+\(y_{gpcr}=\mu+\phi_{p}+\gamma_{g}+\color{red}{\phi\gamma_{pg}}+(\phi\chi)_{pc}+\epsilon_{gpcr}\)
+
+<ul>
+<li>Fixed gating and cell population effects.</li>
+<li>Random center \(\times\) cell population effects.</li>
+<li>Interested in <em>interaction</em> and <em>contrasts</em> of fixed effects.</li>
+</ul></li>
+</ul>
+
+<p>An ideal automated gating method will have low bias and low variability for each population.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Results</h2>
+  </hgroup>
+  <article>
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Conclusions</h2>
+  </hgroup>
+  <article>
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Acknowledgements</h2>
+  </hgroup>
+  <article>
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+
+  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+<!-- Grab CDN jQuery, fall back to local if offline -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Load Javascripts for Widgets -->
+<!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+</html>
