@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Highlights of R-based Flow Cytometry Tools:FlowCAP</title>
+  <title>Highlights of R-based Flow Cytometry Tools and FlowCAP</title>
   <meta charset="utf-8">
-  <meta name="description" content="Highlights of R-based Flow Cytometry Tools:FlowCAP">
+  <meta name="description" content="Highlights of R-based Flow Cytometry Tools and FlowCAP">
   <meta name="author" content="Greg Finak, PhD">
   <meta name="generator" content="slidify" />
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,7 +36,7 @@
     <!-- Should I move this to a Local Layout File? -->
     <slide class="title-slide segue nobackground">
       <hgroup class="auto-fadein">
-        <h1>Highlights of R-based Flow Cytometry Tools:FlowCAP</h1>
+        <h1>Highlights of R-based Flow Cytometry Tools and FlowCAP</h1>
         <h2>Advanced Data Analysis Course, Cyto 2013, San Diego, CA</h2>
         <p>Greg Finak, PhD<br/>Staff Scientist, Vaccine and Infectious Disease Division <br/> Fred Hutchinson Cancer Research Center, Seattle, WA</p>
       </hgroup>
@@ -64,7 +64,6 @@
 
 <ul>
 <li>Automated gating of standardized <strong>Lyoplate-based</strong> flow cytometry data.</li>
-<li>Prediction of vaccination status in a clinical trial ICS data set.</li>
 </ul></li>
 </ul>
 
@@ -77,13 +76,59 @@
     <h2>R Tools for Flow Cytometry Data Analysis</h2>
   </hgroup>
   <article>
-    <p>R provides a suite of free, open-source tools for flow cyotometry <em>data analysis</em>.</p>
+    <p>R provides a suite of <em>free</em>, <em>open-source</em> tools for flow cyotometry data analysis.</p>
 
 <ul>
-<li>Storage, preprocessing, transformation, compensation, gating.</li>
+<li>From storage, preprocessing, transformation, compensation, and gating, to downstream analysis.</li>
 </ul>
 
-<p><img src="assets/img/CytometryWorkflow.png", style="height: auto; max-width: 100%; width: auto;"></p>
+<div style="position:relative;">
+<div align="center">
+<img src="assets/img/CytometryWorkflow2.png", style="height: auto; max-width: 100%; width: auto;">
+</div>
+
+<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.35;">
+</div>
+
+<div style="float:left; position: absolute; top: 10px; right:0px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
+<b style="color:black">Gating and Clustering</b><br><br>
+<font color="red">OpenCyto<br></font>
+flowClust<br>
+flowMerge<br>
+flowMeans<br>
+SamSpectral<br>
+FLAME<br>
+flowPhyto<br>
+flowFP<br>
+flowPeaks<br>
+flowKoh<br>
+NMF-curvHDR<br>
+SPADE<br>
+PRAMS<br>
+</div>
+
+<div style="float:left; position: absolute; top: 10px; left:10px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
+<b style="color:black">Discovery and Downstream Analysis</b><br><br>
+flowType<br>
+RchyOptimyx<br>
+MIMOSA<br>
+</div>
+
+<div style="float:left; position: absolute; top: 10px; left:350px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
+<b style="color:black">Infrastructure, Preprocessing and Visualization</b><br><br>
+<font color="red">flowWorkspace<br></font>
+<font color="red">ncdfFlow<br></font>
+flowCore<br>
+flowUtils<br>
+flowTrans<br>
+flowStats<br>
+plateCore<br>
+flowViz<br>
+flowQ<br>
+QUALIFIER  
+</div>
+
+<p></div></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -91,7 +136,7 @@
 
       <slide class="" id="slide-3" style="background:;">
   <hgroup>
-    <h2>ncdfFlow</h2>
+    <h2>ncdfFlow: large data sets, little memory</h2>
   </hgroup>
   <article>
     <p><a href="http://www.unidata.ucar.edu/software/netcdf/">NetCDF</a>-based storage of large flow cytometry data sets.</p>
@@ -133,7 +178,7 @@ dat&lt;-read.ncdfFlowSet(f,ncdfFile=&quot;./myncfile&quot;)
 
       <slide class="" id="slide-4" style="background:;">
   <hgroup>
-    <h2>flowWorkspace</h2>
+    <h2>flowWorkspace: Import your flowJo data</h2>
   </hgroup>
   <article>
     <p><em><a href="http://www.github.com/RGLab/flowWorkspace">http://www.github.com/RGLab/flowWorkspace</a></em> (<a href="http://bioconductor.org/packages/2.12/bioc/html/flowWorkspace.html">Bioconductor</a>)<br>
@@ -143,7 +188,7 @@ Reproduce FlowJo gating in <em>R</em> from an exported workspace.</p>
 <div style='float:left;width:48%;' class='centered'>
   <pre><code class="custom">ws&lt;-openWorkspace(&quot;./Data/Centralized T-cell.xml&quot;);
 G&lt;-parseWorkspace(ws);
-plotGate(G[[1]],&quot;CD3&quot;); #Plot CD3 gate
+plotGate(G[[1]],&quot;24hi 38hi&quot;); #Plot transitional gate
 plot(G[[1]]);           #Plot gating hierarchy
 </code></pre>
 
@@ -161,21 +206,22 @@ plot(G[[1]]);           #Plot gating hierarchy
 
       <slide class="" id="slide-5" style="background:;">
   <hgroup>
-    <h2>OpenCyto</h2>
+    <h2>OpenCyto: A flexible framework for automated gating</h2>
   </hgroup>
   <article>
     <p><em><a href="http://www.github.com/RGLab/openCyto">http://www.github.com/RGLab/openCyto</a></em></p>
 
-<p>Integrates <em>flowWorkspace</em> infrastructure with automated gating tools (<em>Bayesian flowClust</em>, <em>flowCore</em>, others)</p>
+<p>Integrates <em>flowWorkspace</em> infrastructure with automated gating tools (<em>Bayesian flowClust</em>, <em>flowCore</em>, and others)</p>
 
 <ul>
-<li>Modular framework: plug-in your own gating algorithms</li>
-<li>Template-based automated gating
+<li><em>Modular framework:</em> plug-in your own gating algorithms</li>
+<li><em>High-level automated gating</em>
 
 <ul>
-<li>User-defined template describes a <em>hierarchy</em> of cell population hierarchy and relevant markers</li>
-<li>Gating is <em>data-driven</em>. (User doesn&#39;t define any gates)</li>
-<li>Higher-dimensional gating (e.g. &gt;2D)  <em>is</em> available.</li>
+<li>User defines <em>hierarchy</em> of cell populations and relevant markers</li>
+<li>Gating is <em>data-driven</em>. (User doesn&#39;t define <em>gates</em> just <em>cell populations</em>)</li>
+<li>Higher-dimensional gating (e.g. &gt;2D)  is available.<br>
+Framework abstracts away most of the R-coding.</li>
 </ul></li>
 </ul>
 
@@ -185,10 +231,10 @@ plot(G[[1]]);           #Plot gating hierarchy
 
       <slide class="" id="slide-6" style="background:;">
   <hgroup>
-    <h2>OpenCyto</h2>
+    <h2>OpenCyto: Defining cell populations</h2>
   </hgroup>
   <article>
-    <h3>Example CSV Gating Template Definition (B-cell Panel)</h3>
+    <h4>Example CSV Gating Template Definition (Lyoplate B-cell Panel)</h4>
 
 <table><thead>
 <tr>
@@ -212,7 +258,7 @@ plot(G[[1]]);           #Plot gating hierarchy
 <td>singlets</td>
 <td>singlets+</td>
 <td>nonDebris</td>
-<td>FSC-A,SSC-A</td>
+<td>FSCA,FSCH</td>
 <td>singletGate</td>
 <td></td>
 </tr>
@@ -220,37 +266,61 @@ plot(G[[1]]);           #Plot gating hierarchy
 <td>lymph</td>
 <td>lymph</td>
 <td>singlets</td>
-<td>FSC-A,SSC-A</td>
+<td>FSCA,SSCA</td>
 <td>flowClust</td>
 <td>K=3,quantile=0.95,target=c(1e5,5e4)</td>
 </tr>
 <tr>
-<td>CD3</td>
-<td>CD3+</td>
+<td>cd3</td>
+<td>cd3-</td>
 <td>lymph</td>
-<td>CD3</td>
+<td>cd3</td>
 <td>flowClust</td>
 <td>K=3,neg=2</td>
 </tr>
 <tr>
-<td>CD4</td>
-<td>CD4+</td>
+<td>cd19</td>
+<td>cd19+</td>
 <td>CD3</td>
-<td>CD4,SSC-A</td>
+<td>cd20</td>
 <td>flowClust</td>
+<td>K=2</td>
+</tr>
+<tr>
+<td>cd20</td>
+<td>cd20+</td>
+<td>CD3</td>
+<td>cd20</td>
+<td>flowClust</td>
+<td>K=2</td>
+</tr>
+<tr>
+<td>cd19&amp;!cd20</td>
+<td>cd19&amp;!cd20</td>
+<td>cd3</td>
+<td>boolGate</td>
+<td>cd19&amp;!cd20</td>
 <td></td>
 </tr>
 <tr>
-<td>CD8</td>
-<td>CD8+</td>
-<td>CD3</td>
-<td>CD8,SSC-A</td>
-<td>flowClust</td>
+<td>cd19&amp;cd20</td>
+<td>cd19&amp;cd20</td>
+<td>cd3</td>
+<td>boolGate</td>
+<td>cd19&amp;cd20</td>
 <td></td>
+</tr>
+<tr>
+<td>transitional</td>
+<td>transitional</td>
+<td>cd19&amp;cd20</td>
+<td>cd38,cd24</td>
+<td>flowClust</td>
+<td>K=5,gate_type=&#39;axis&#39;,target=c(3.5e3,3.5e3),quantile=0.995,axis_translation=0.35</td>
 </tr>
 </tbody></table>
 
-<h3>R Code to Run the Gating</h3>
+<h4>R Code to Run the Gating</h4>
 
 <pre><code class="custom2">template&lt;-gatingTemplate(&quot;bcellTemplate.csv&quot;)
 fs&lt;-readFlowSet(file=&quot;Data/Bcells/&quot;)
@@ -263,6 +333,54 @@ G&lt;-gating(template,gs)
 </slide>
 
       <slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>OpenCyto: View all gates</h2>
+  </hgroup>
+  <article>
+    <div style="float: left;">
+<img src="figure/opencyto1.png", style="width: auto; max-width: 49%; height: auto;">
+<img src="figure/opencyto6.png", style="width: auto; max-width: 49%; height: auto;">
+</div>
+
+<div style="float:left; color: red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right; color: red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Gating Hierarchies</h2>
+  </hgroup>
+  <article>
+    <div>
+<img  src="figure/opencyto3.png", style="width: auto; max-width: 49%; height: auto;">
+<img  src="figure/opencyto5.png", style="width: auto; max-width: 49%; height: auto;">
+</div>
+
+<div style="float:left; color:red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right; color:red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Transitional B-cell gates</h2>
+  </hgroup>
+  <article>
+    <div>
+<img src="figure/opencyto2.png", style="width: auto; max-width: 49%; height: auto;">
+<img src="figure/opencyto4.png", style="width: auto; max-width: 49%; height: auto;">
+</div>
+
+<div style="float:left; color:red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right;color:red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-10" style="background:;">
   <hgroup>
     <h2>FlowCAP: Critical Assessment of Cell Population Identification Methods</h2>
   </hgroup>
@@ -293,7 +411,7 @@ G&lt;-gating(template,gs)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-8" style="background:;">
+      <slide class="" id="slide-11" style="background:;">
   <hgroup>
     <h2>Standardized Lyoplate Staining Panels</h2>
   </hgroup>
@@ -308,7 +426,7 @@ G&lt;-gating(template,gs)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-9" style="background:;">
+      <slide class="" id="slide-12" style="background:;">
   <hgroup>
     <h2>FlowCAP III: Lyoplate Standardized Gating</h2>
   </hgroup>
@@ -320,14 +438,42 @@ G&lt;-gating(template,gs)
 <ul>
 <li>FlowCAP focused on the T-cell and B-cell panels.</li>
 <li>9 sites, 4 replicates of cryopreserved cells per site. </li>
-<li>Local, central, and automated gating.</li>
 </ul>
 
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-10" style="background:;">
+      <slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Why Compare Against Manual Gating?</h2>
+  </hgroup>
+  <article>
+    <h3>In clinical trials, the things we want to measure are well defined <em>a-priori</em>.</h3>
+
+<ul>
+<li>Flow assays are well defined.</li>
+<li>Cell populations of interest are well defined.</li>
+<li>No immediate need to go fishing with high-dimensional gating for &quot;discovery&quot;.</li>
+</ul>
+
+<h3>Generally large data sets.</h3>
+
+<ul>
+<li>Gating is tedious and subject to human error (this has been shown).</li>
+<li>Automate the repetitive tasks. 
+
+<ul>
+<li><em>robust</em></li>
+<li><em>reproducible</em></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-14" style="background:;">
   <hgroup>
     <h2>Centralized Gating Reduces Cell Population Variability</h2>
   </hgroup>
@@ -338,9 +484,9 @@ G&lt;-gating(template,gs)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-11" style="background:;">
+      <slide class="" id="slide-15" style="background:;">
   <hgroup>
-    <h2>Participants</h2>
+    <h2>FlowCAP Participants (Lyoplate Challenge)</h2>
   </hgroup>
   <article>
     <h3><em>DENSE</em> ( A. Brandes, Broad Institute )</h3>
@@ -359,7 +505,7 @@ G&lt;-gating(template,gs)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-12" style="background:;">
+      <slide class="" id="slide-16" style="background:;">
   <hgroup>
     <h2>FlowCAP III Gating Evaluation Criteria</h2>
   </hgroup>
@@ -390,32 +536,127 @@ G&lt;-gating(template,gs)
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-13" style="background:;">
+      <slide class="" id="slide-17" style="background:;">
   <hgroup>
-    <h2>Results</h2>
+    <h2>T-cell Panel Results</h2>
   </hgroup>
   <article>
-    
+    <p><img src="figure/lyoplatePlots8.png", style="width: 100%; height: auto;"><br>
+Cross center variability of automated gating methods is comparable to centralized gating.</p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-14" style="background:;">
+      <slide class="" id="slide-18" style="background:;">
   <hgroup>
-    <h2>Conclusions</h2>
+    <h2>B-cell Panel Results</h2>
   </hgroup>
   <article>
-    
+    <p><img src="figure/lyoplatePlots9.png", style="width: 100%; height: auto;"><br>
+At least one method per panel matches the variability of centralized gating for all populations.</p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
-      <slide class="" id="slide-15" style="background:;">
+      <slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Bias: T-cell panel</h2>
+  </hgroup>
+  <article>
+    <p><img src="figure/lyoplate1.png", style="width: auto; height: auto; max-width: 95%; max-height: 90%;"></img></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Bias: B-cell panel</h2>
+  </hgroup>
+  <article>
+    <p><img src="figure/lyoplate2.png", style="width: auto; height: auto; max-width: 95%; max-height:90%;"></img></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Summary</h2>
+  </hgroup>
+  <article>
+    <ul>
+<li>FlowCAP identified several automated gating algorithms that are ready for prime time.
+
+<ul>
+<li><strong>DENSE</strong> (Broad Institute).</li>
+<li><strong>flowDensity</strong> (BCCA).</li>
+<li><strong>OpenCyto</strong> (FHCRC).</li>
+</ul></li>
+<li><p>Reproduce centralized consensus manual gating, low variability and bias.</p></li>
+<li><p>R/Bioconductor provides open-source tools for flow cytometry data analysis</p>
+
+<ul>
+<li>Emphasizing ease of use.</li>
+<li>Handle large, real-world data sets.</li>
+<li>Access your manually gated data (FlowJo support: Mac, Windows, version X and older)</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>Acknowledgements</h2>
   </hgroup>
   <article>
     
+<div style='float:left;width:48%;' class='centered'>
+  <h3><strong>R Flow Tools</strong></h3>
+
+<p><em>All Bioconductor Flow Package Contributors</em></p>
+
+<h4>FHCRC</h4>
+
+<p>Raphael Gottardo<br>
+Greg Finak<br>
+Mike Jiang<br>
+John Ramey  </p>
+
+<h4>BCCA</h4>
+
+<p>Ryan Brinkman<br>
+Nima Aghaeepour  </p>
+
+<h4>TreeStar</h4>
+
+<p>Adam Triester<br>
+Jay Almarode  </p>
+
+
+</div>
+<div style='float:right;width:48%;'>
+  <h3><strong>FlowCAP</strong></h3>
+
+<p>Holden Maecker  (Stanford)<br>
+Phil McCoy  (NHLBI)</p>
+
+<h4>FlowCAP Coordinating Committee</h4>
+
+<p>Raphael Gottardo (FHCRC)<br>
+Ryan Brinkman (BCCA)<br>
+Richard Scheuermann (JCVI)<br>
+Tim Mossman (U Rochester)<br>
+Nima Aghaeepour (Stanford)<br>
+Greg Finak (FHCRC)<br>
+<em>Thanks to all FlowCAP</em><br>
+<em>Participants</em>  </p>
+
+</div>
   </article>
   <!-- Presenter Notes -->
 </slide>

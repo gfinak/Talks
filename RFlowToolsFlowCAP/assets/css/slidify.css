@@ -34,6 +34,7 @@ article p, article li, article li.build{
 
 slide h3, h4{
 color: #0033CC;  
+text-align: left;
 }
 
 .opacity80 {
