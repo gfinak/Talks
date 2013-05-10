@@ -13,14 +13,13 @@ mode        : selfcontained # {standalone, draft}
 
 ## Overview
 
->### New Core R Software Infrastrucutre for Flow Cytometry
+> ### New Core R Software Infrastrucutre for Flow Cytometry
   - *ncdfFlow*: NetCDF, high-performace, disk-based access to large flow data sets.
   - *flowWorkspace*: FlowJo workspace support. Import and reproduce FlowJo manual gating from wsp and xml files.
   - *OpenCyto*: Template-based, data-driven, automated hierarchical gating.
   
->### FlowCAP III - 2012
-  - FlowCAP Challenges 
-      - Automated gating of standardized **Lyoplate-based** flow cytometry data.
+> ### FlowCAP III - 2012
+  - Automated gating of standardized **Lyoplate-based** flow cytometry data.
 
 ---
 
@@ -33,7 +32,7 @@ R provides a suite of *free*, *open-source* tools for flow cyotometry data analy
 <div align="center">
 <img src="assets/img/CytometryWorkflow2.png", style="height: auto; max-width: 100%; width: auto;">
 </div>
-<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.35;">
+<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.4;">
 </div>
 
 <div style="float:left; position: absolute; top: 10px; right:0px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
@@ -82,7 +81,7 @@ QUALIFIER
 
 *http://www.github.com/RGLab/ncdfFlow* ([Bioconductor](http://bioconductor.org/packages/2.12/bioc/html/ncdfFlow.html))
 
-  - Data remains on disk - accessed as if in memory - small RAM footprint.
+  - Data remains on disk (e.g. network drive) - accessed as if in memory - small RAM footprint.
   - Handles large studies (1000's of FCS files).
     - *e.g.* 34 FCS files from one lyoplate panel from nine sites.
   
@@ -213,16 +212,18 @@ G<-gating(template,gs)
 
 ## OpenCyto: View all gates
 
-```{r opencyto, echo=FALSE,cache=FALSE,eval=TRUE,results='hide',message=FALSE,warning=FALSE,error=FALSE,fig.width=8,fig.height=8,out.height='600px',out.width='800px',include=FALSE}
+```{r opencyto, echo=FALSE,cache=TRUE,eval=TRUE,results='hide',message=FALSE,warning=FALSE,error=FALSE,fig.width=10,fig.height=10,out.height='600px',out.width='800px',include=FALSE}
 suppressPackageStartupMessages(require(openCyto))
-g<-G[[5]]
-plotGate(g[[2]],xbin=FALSE)
-plotGate(g[[2]],6,xbin=128)
+g<-G[[6]]
+plotGate(g[[2]],xbin=FALSE,margin=FALSE)
+plotGate(g[[2]],6,xbin=128,margin=TRUE)
 plot(g[[2]],boolean=TRUE)
-
 Rm("Lymphs",g)
+#Rm("IgDgate",g)
+#Rm("IgD+cd27+",g)
 gt<-gatingTemplate("Data/gt-bcell.csv","bcell")
 gating(gt,g)
+#plotGate(g[[2]],"IgD+cd27+",xbin=128,margin=FALSE)
 flowViz.par.set("gate",list(lwd=3))
 for(i in 1:length(g)){
   nds<-getNodes(g[[i]])
@@ -231,9 +232,9 @@ for(i in 1:length(g)){
         setNode(g[[i]],nds[j],nds2[j])
         }
   }
-plotGate(g[[2]],15,xbin=128)
+plotGate(g[[2]],15,xbin=128,margin=TRUE)
 plot(g[[2]],boolean=TRUE)
-plotGate(g[[2]],c(3,4,5,15,11,12,13,14,19,7,6),xbin=FALSE)
+plotGate(g[[2]],c(3,4,5,15,11,12,13,14,19,7,6),xbin=FALSE,margin=FALSE)
 ```
 <div style="float: left;">
 <img src="figure/opencyto1.png", style="width: auto; max-width: 49%; height: auto;">
@@ -395,20 +396,6 @@ At least one method per panel matches the variability of centralized gating for 
 ## Bias: B-cell panel
 <img src="figure/lyoplate2.png", style="width: auto; height: auto; max-width: 95%; max-height:90%;"></img>
 
----
-
-## Summary
-
-- FlowCAP identified several automated gating algorithms that are ready for prime time.
-  - **DENSE** (Broad Institute).
-  - **flowDensity** (BCCA).
-  - **OpenCyto** (FHCRC).
-- Reproduce centralized consensus manual gating, low variability and bias.
-
-- R/Bioconductor provides open-source tools for flow cytometry data analysis
-  - Emphasizing ease of use.
-  - Handle large, real-world data sets.
-  - Access your manually gated data (FlowJo support: Mac, Windows, version X and older)
 
 --- &twocol
 
@@ -417,31 +404,48 @@ At least one method per panel matches the variability of centralized gating for 
 ***left
 
 ### **R Flow Tools**
-*All Bioconductor Flow Package Contributors*
-
-#### FHCRC
+*Bioconductor Flow Package Contributors*  
+<font color="blue">FHCRC</font><br>
 Raphael Gottardo  
-Greg Finak  
 Mike Jiang  
 John Ramey  
-#### BCCA
+<font color="blue">BCCA</font><br>
 Ryan Brinkman  
 Nima Aghaeepour  
-#### TreeStar
+Jafar Taghiyar
+<font color="blue">TreeStar</font><Br>
 Adam Triester  
 Jay Almarode  
 
 ***right
 
 ### **FlowCAP**
+<font color="blue">Lyoplate Data</font><br>
 Holden Maecker  (Stanford)  
 Phil McCoy  (NHLBI)
-#### FlowCAP Coordinating Committee  
+Participating Centers  
+<font color="blue">FlowCAP Coordinating Committee</font><br>
 Raphael Gottardo (FHCRC)  
 Ryan Brinkman (BCCA)  
 Richard Scheuermann (JCVI)  
 Tim Mossman (U Rochester)  
 Nima Aghaeepour (Stanford, BCCA)   
-Greg Finak (FHCRC)   
 *Thanks to all FlowCAP*  
 *Participants*  
+
+---
+
+## Take Home Message
+
+#### There are automated gating algorithms that are sufficiently robust to be useful for data analysis *today*.   
+  - **DENSE** (Broad Institute), **flowDensity** (BCCA), **OpenCyto Framework** (FHCRC)
+  
+#### A wealth of **FREE** open-source flow tools are available for R.
+- OpenCyto framework emphasizing ease of use.
+- Handling real-world data sets (*large studies*)
+- Access manually gated FlowJo data in R.
+    - (support for Mac, Windows, version X and older)
+    
+### There is now little reason not to start exploring your flow data in R.  
+
+<p style="float:left; font-size:20px;position:absolute;bottom:10px;color:red;">Get these slides online: <a href="http://github.com/gfinak/Talks/tree/master/RFlowToolsFlowCAP">http://www.github.com/gfinak/Talks/RFlowToolsFlowCAP</a><br></p>

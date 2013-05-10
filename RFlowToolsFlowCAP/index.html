@@ -60,11 +60,7 @@
 <h3>FlowCAP III - 2012</h3>
 
 <ul>
-<li>FlowCAP Challenges 
-
-<ul>
 <li>Automated gating of standardized <strong>Lyoplate-based</strong> flow cytometry data.</li>
-</ul></li>
 </ul>
 
   </article>
@@ -87,7 +83,7 @@
 <img src="assets/img/CytometryWorkflow2.png", style="height: auto; max-width: 100%; width: auto;">
 </div>
 
-<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.35;">
+<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.4;">
 </div>
 
 <div style="float:left; position: absolute; top: 10px; right:0px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
@@ -144,7 +140,7 @@ QUALIFIER
 <p><em><a href="http://www.github.com/RGLab/ncdfFlow">http://www.github.com/RGLab/ncdfFlow</a></em> (<a href="http://bioconductor.org/packages/2.12/bioc/html/ncdfFlow.html">Bioconductor</a>)</p>
 
 <ul>
-<li>Data remains on disk - accessed as if in memory - small RAM footprint.</li>
+<li>Data remains on disk (e.g. network drive) - accessed as if in memory - small RAM footprint.</li>
 <li>Handles large studies (1000&#39;s of FCS files).
 
 <ul>
@@ -584,33 +580,6 @@ At least one method per panel matches the variability of centralized gating for 
 
       <slide class="" id="slide-21" style="background:;">
   <hgroup>
-    <h2>Summary</h2>
-  </hgroup>
-  <article>
-    <ul>
-<li>FlowCAP identified several automated gating algorithms that are ready for prime time.
-
-<ul>
-<li><strong>DENSE</strong> (Broad Institute).</li>
-<li><strong>flowDensity</strong> (BCCA).</li>
-<li><strong>OpenCyto</strong> (FHCRC).</li>
-</ul></li>
-<li><p>Reproduce centralized consensus manual gating, low variability and bias.</p></li>
-<li><p>R/Bioconductor provides open-source tools for flow cytometry data analysis</p>
-
-<ul>
-<li>Emphasizing ease of use.</li>
-<li>Handle large, real-world data sets.</li>
-<li>Access your manually gated data (FlowJo support: Mac, Windows, version X and older)</li>
-</ul></li>
-</ul>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-      <slide class="" id="slide-22" style="background:;">
-  <hgroup>
     <h2>Acknowledgements</h2>
   </hgroup>
   <article>
@@ -618,23 +587,17 @@ At least one method per panel matches the variability of centralized gating for 
 <div style='float:left;width:48%;' class='centered'>
   <h3><strong>R Flow Tools</strong></h3>
 
-<p><em>All Bioconductor Flow Package Contributors</em></p>
-
-<h4>FHCRC</h4>
-
-<p>Raphael Gottardo<br>
-Greg Finak<br>
+<p><em>Bioconductor Flow Package Contributors</em><br>
+<font color="blue">FHCRC</font><br>
+Raphael Gottardo<br>
 Mike Jiang<br>
-John Ramey  </p>
-
-<h4>BCCA</h4>
-
-<p>Ryan Brinkman<br>
-Nima Aghaeepour  </p>
-
-<h4>TreeStar</h4>
-
-<p>Adam Triester<br>
+John Ramey<br>
+<font color="blue">BCCA</font><br>
+Ryan Brinkman<br>
+Nima Aghaeepour<br>
+Jafar Taghiyar
+<font color="blue">TreeStar</font><Br>
+Adam Triester<br>
 Jay Almarode  </p>
 
 
@@ -642,21 +605,51 @@ Jay Almarode  </p>
 <div style='float:right;width:48%;'>
   <h3><strong>FlowCAP</strong></h3>
 
-<p>Holden Maecker  (Stanford)<br>
-Phil McCoy  (NHLBI)</p>
-
-<h4>FlowCAP Coordinating Committee</h4>
-
-<p>Raphael Gottardo (FHCRC)<br>
+<p><font color="blue">Lyoplate Data</font><br>
+Holden Maecker  (Stanford)<br>
+Phil McCoy  (NHLBI)
+Participating Centers<br>
+<font color="blue">FlowCAP Coordinating Committee</font><br>
+Raphael Gottardo (FHCRC)<br>
 Ryan Brinkman (BCCA)<br>
 Richard Scheuermann (JCVI)<br>
 Tim Mossman (U Rochester)<br>
-Nima Aghaeepour (Stanford)<br>
-Greg Finak (FHCRC)<br>
+Nima Aghaeepour (Stanford, BCCA)<br>
 <em>Thanks to all FlowCAP</em><br>
 <em>Participants</em>  </p>
 
 </div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+      <slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>Take Home Message</h2>
+  </hgroup>
+  <article>
+    <h4>There are automated gating algorithms that are sufficiently robust to be useful for data analysis <em>today</em>.</h4>
+
+<ul>
+<li><strong>DENSE</strong> (Broad Institute), <strong>flowDensity</strong> (BCCA), <strong>OpenCyto Framework</strong> (FHCRC)</li>
+</ul>
+
+<h4>A wealth of <strong>FREE</strong> open-source flow tools are available for R.</h4>
+
+<ul>
+<li>OpenCyto framework emphasizing ease of use.</li>
+<li>Handling real-world data sets (<em>large studies</em>)</li>
+<li>Access manually gated FlowJo data in R.
+
+<ul>
+<li>(support for Mac, Windows, version X and older)</li>
+</ul></li>
+</ul>
+
+<h3>There is now little reason not to start exploring your flow data in R.</h3>
+
+<p style="float:left; font-size:20px;position:absolute;bottom:10px;color:red;">Get these slides online: <a href="http://github.com/gfinak/Talks/tree/master/RFlowToolsFlowCAP">http://www.github.com/gfinak/Talks/RFlowToolsFlowCAP</a><br></p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
