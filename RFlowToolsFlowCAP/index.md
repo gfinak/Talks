@@ -257,8 +257,8 @@ Focus on reproducibility, applicability to clinical trials.
 ### Generally large data sets.
 - Gating is tedious and subject to human error (this has been shown).
 - Automate the repetitive tasks. 
-  - *robust*
-  - *reproducible*
+  - *Robust*
+  - *Reproducible*
 
 ---
 
@@ -287,11 +287,10 @@ Assess *automated methods* relative to *central manual gating*.
 - **Bias:**
    $RMSD_{gpc} = \sqrt{\frac{\sum(y_{gcpr}-\mu_{mpc})}{R}}$
 - **Mixed Effects Model:**
-  $y_{gpcr}=\mu+\phi_{p}+\gamma_{g}+\color{red}{\phi\gamma_{pg}}+(\phi\chi)_{pc}+\epsilon_{gpcr}$
+  $y_{gpcr}=\mu+\phi_{p}+\color{red}{\gamma_{g}}+\color{red}{\phi\gamma_{pg}}+(\phi\chi)_{pc}+\epsilon_{gpcr}$
   - Fixed gating and cell population effects.
   - Random center $\times$ cell population effects.
-  - Interested in *interaction* and *contrasts* of fixed effects.
-
+  - Interested in *interaction* and *contrasts* of fixed effects.  ($\gamma_g + \phi\gamma_{pg} -\gamma_0 - \phi\gamma_{p0} = 0$)  
 An ideal automated gating method will have low bias and low variability for each population.
 
 ---
@@ -351,6 +350,7 @@ Jay Almarode
 <font color="blue">Lyoplate Data</font><br>
 Holden Maecker  (Stanford)  
 Phil McCoy  (NHLBI)
+FOCIS and HIPC consortia
 Participating Centers  
 <font color="blue">FlowCAP Coordinating Committee</font><br>
 Raphael Gottardo (FHCRC)  
@@ -360,6 +360,7 @@ Tim Mossman (U Rochester)
 Nima Aghaeepour (Stanford, BCCA)   
 *Thanks to all FlowCAP*  
 *Participants*  
+NIH and NIAID
 
 ---
 
