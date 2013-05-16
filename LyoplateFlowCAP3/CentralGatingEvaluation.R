@@ -565,5 +565,5 @@ Plots<-c(Plots,p)
 p<-list(ggplot(ddply(mseB,.(Algorithm:Popname),summarise,Algorithm=unique(Algorithm),Popname=unique(Popname),Mean.RMSD.Percent=mean(RMSD.Percent)))+geom_bar(aes(x=Algorithm,y=Mean.RMSD.Percent,fill=Algorithm),stat="identity")+facet_wrap(~Popname,scale="free_y")+theme_bw()+theme(axis.text.x=element_text(angle=90,hjust=1))+scale_fill_manual(values=c("DENSE"="red","OpenCyto"="blue","flowDensity"="green","emcytom"="cyan","JCVI"="pink","CentralGating"="yellow","DENSE2"="orange")))
 Plots<-c(Plots,p)
 
-setwd("/Users/gfinak/Documents/Projects/AdvDataAnalysisCyto2013/RFlowToolsFlowCAP/")
+setwd("/Users/gfinak/Documents/Projects/AdvDataAnalysisCyto2013/LyoplateFlowCAP3/")
 

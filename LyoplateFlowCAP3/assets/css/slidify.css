@@ -27,9 +27,10 @@
 article p, article li, article li.build{
   font-family: 'Helvetica', 'Crimson Text', 'Garamond',  'Palatino', sans-serif;
   text-align: justify;
-  font-size:27px;
+  font-size:25px;
   line-height: 1.5em;
   color: #4D4D4D;
+  text-align:left;
 }
 
 slide h3, h4{

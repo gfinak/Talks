@@ -1,6 +1,6 @@
 ---
-title       : Highlights of R-based Flow Cytometry Tools and FlowCAP
-subtitle    : Advanced Data Analysis Course, Cyto 2013, San Diego, CA
+title       : FlowCAP. Comparison of Automated and Manual Gating of Standardized Lyoplate Flow Cytometry Data
+subtitle    : Flow Cytometry Software Session, Cyto 2013, San Diego, CA
 author      : Greg Finak, PhD
 job1        : Staff Scientist, Vaccine and Infectious Disease Division
 job2        : Fred Hutchinson Cancer Research Center, Seattle, WA
@@ -13,105 +13,155 @@ mode        : selfcontained # {standalone, draft}
 
 ## Overview
 
-> ### New Core R Software Infrastrucutre for Flow Cytometry
-  - *ncdfFlow*: NetCDF, high-performace, disk-based access to large flow data sets.
-  - *flowWorkspace*: FlowJo workspace support. Import and reproduce FlowJo manual gating from wsp and xml files.
-  - *OpenCyto*: Template-based, data-driven, automated hierarchical gating.
-  
-> ### FlowCAP III - 2012
-  - Automated gating of standardized **Lyoplate-based** flow cytometry data.
+### Why Standardize Assays?  
+
+### Lyoplates and the FOCIS / HIPC effort.
+
+### Brief history of FlowCAP.  
+
+### FlowCAP III - Automated gating of standardized **Lyoplate-based** flow cytometry data.  
+
+### OpenCyto Framework to make the FlowCAP algorithms avaialble and easy to use.
+
+---
+## Standardization Facilitates Reproducibility and Data Comparison
+<div align="center"><img src="assets/img/CytometryWorkflow2.png", style="width:75%;height:auto;"></div>
+<div style="text-align: right; color: black; font-size: 15px;">Maecker, McCoy, Nussenblatt, Nat Rev Immunol, 2012</div>
+Flow is a complex assay - *many* potential sources of variability.  
+Sample collection, preparation, staining, acquisition, instrumentation, data analysis.  
+Need to control as many aspects of the assay as possible.  
 
 ---
 
+## Standardized FITMan Staining Panels Allow Comparison of Results Across Centers
 
-## R Tools for Flow Cytometry Data Analysis
-R provides a suite of *free*, *open-source* tools for flow cyotometry data analysis.
-- From storage, preprocessing, transformation, compensation, and gating, to downstream analysis.
-
-<div style="position:relative;">
 <div align="center">
-<img src="assets/img/CytometryWorkflow2.png", style="height: auto; max-width: 100%; width: auto;">
-</div>
-<div style="position: absolute; top: -10px; left 0px; width: 100%; height:99%; auto; border: 1px solid black; background-color: gray; opacity:0.4;">
+<img src="assets/img/LyoplateStainingPanels.png", style="width: auto; height: auto; max-width: 85%;">
 </div>
 
-<div style="float:left; position: absolute; top: 10px; right:0px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
-<b style="color:black">Gating and Clustering</b><br><br>
-<font color="red">OpenCyto<br></font>
-flowClust<br>
-flowMerge<br>
-flowMeans<br>
-SamSpectral<br>
-FLAME<br>
-flowPhyto<br>
-flowFP<br>
-flowPeaks<br>
-flowKoh<br>
-NMF-curvHDR<br>
-SPADE<br>
-PRAMS<br>
-</div>
-<div style="float:left; position: absolute; top: 10px; left:10px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
-<b style="color:black">Discovery and Downstream Analysis</b><br><br>
-flowType<br>
-RchyOptimyx<br>
-MIMOSA<br>
-</div>
-
-<div style="float:left; position: absolute; top: 10px; left:350px; width: 33%; height: 100%; color: blue; font-style: italic; opacity: 1;">
-<b style="color:black">Infrastructure, Preprocessing and Visualization</b><br><br>
-<font color="red">flowWorkspace<br></font>
-<font color="red">ncdfFlow<br></font>
-flowCore<br>
-flowUtils<br>
-flowTrans<br>
-flowStats<br>
-plateCore<br>
-flowViz<br>
-flowQ<br>
-QUALIFIER  
-</div>
-</div>
+<div style="text-align: right; color: black; font-size: 15px;">Maecker, McCoy, Nussenblatt, Nat Rev Immunol, 2012</div>
+Proposed in 2010 at FITMan meeting.  
+Implemented as standardized Lyoplates (96 well plates, lyophilized reagents).
 
 ---
 
-## ncdfFlow: large data sets, little memory
+## Panels are Targeted at "Commonly Identified" Cell Populations.
 
-[NetCDF](http://www.unidata.ucar.edu/software/netcdf/)-based storage of large flow cytometry data sets.
+<div style="float:left;width:60%", align="left"><img src="assets/img/HIPCgatingTemplate.png", style="max-width:100%;"><div style="text-align: left; color: black; font-size: 15px;">Figure Courtesy of H. Maecker</div>
+</div><div style="float:right;max-width:40%;position:relative;left:10px;top:-40px;font-size:24px;">
+<h4>T-cells</h4>
+<p style="text-align:left;font-size:20px;">Naive, memory, plasmablasts, transitional</p>
+<h4>T regulatory cells</h4>
+<p style="text-align:left;font-size:20px;">CD4, Treg, memory, naive, activated</p>
+<h4>Th1 Th2 Th17 cells</h4>
+<p style="text-align:left;font-size:20px;">CD4/CD8 Th1,2,17, activated</p>
+<h4>B cells</h4>
+<p style="text-align:left;font-size:20px;">CD4/CD8 naive, central memory, <br> effector memory, effector, activated.</p>
+<h4>Dendritic cells, monocytes, NK cells</h4>
+<p style="text-align:left;font-size:20px;">DC, mDC, pDC, monocytes, CD16 monocytes, conventional monocytes</p>
+</div>
 
-*http://www.github.com/RGLab/ncdfFlow* ([Bioconductor](http://bioconductor.org/packages/2.12/bioc/html/ncdfFlow.html))
+The panels leave room for custom markers to identify additional populations of interest.
 
-  - Data remains on disk (e.g. network drive) - accessed as if in memory - small RAM footprint.
-  - Handles large studies (1000's of FCS files).
-    - *e.g.* 34 FCS files from one lyoplate panel from nine sites.
-  
+---
 
+## Data Analysis is a Source of Technical Variability
 
-
-
-
-
-
-
-```r
-f <- list.files(path="./Data/T-cell FCS files/",pattern="fcs",recursive=TRUE,full=TRUE)
-dat<-read.ncdfFlowSet(f,ncdfFile="./myncfile")
-```
-
-Data Object | Size
------------|----------
-R object   | 69.19 Kb
-NetCDF Data file  | 662.74 Mb
-
+- Different people performing gating produce different results.
+<div align="center">
+<img style="width:90%;", src="assets/img/combined_local_central_cv_plot.png">
+</div>
+- also compensation, transformation, tools and so forth.
 
 --- &twocol
 
-## flowWorkspace: Import your flowJo data
-*http://www.github.com/RGLab/flowWorkspace* ([Bioconductor](http://bioconductor.org/packages/2.12/bioc/html/flowWorkspace.html))  
-Reproduce FlowJo gating in *R* from an exported workspace.
+## History of the FlowCAP Workshops
+### FLowCAP: Critical Assessment of Cell Population Identification Methods   
+Three-year old series of workshops for benchmarking automated gating methods.  
+Aiming for objective comparison of automated gating algorithms.  
 
 ***left
 
+### **FlowCAP I and II**
+Challenges focused on high dimensional automated gating (discovery).  
+<img src="assets/img/NatMethods.png", width=400px, align=center>
+
+***right
+
+### **FlowCAP III**
+Focus on reproducibility, applicability to clinical trials.
+- Lyoplate Challenge: Reproduce centralized manual gates.
+- Identify methods with minimum bias and low variability.
+
+---
+
+## FlowCAP III: Lyoplate Standardized Gating
+**Identify Gating Methods with low variability and bias relative to centralized manual gating**
+
+<div align="center">
+<img src="assets/img/TcellScheme.png", style="max-height: 35%; max-width: 50%;"><img src="assets/img/BcellScheme.png", style="max-width: 50%; max-height: 35%;">
+</div>
+
+- FlowCAP III Lyoplate challenge focused on the T-cell and B-cell panels.
+- 9 sites, 4 replicates of cryopreserved cells per site. 
+- Centralized gating of data based on a consensus "best" approach amongst the 9 centers.
+- Automated algorithms were compared against the centralized gating.
+
+---
+
+## Why Compare Against Manual Gating?
+
+### In clinical trials, the things we want to measure are well defined *a-priori*.
+- Flow assays are well defined.
+- Cell populations of interest are well defined.
+- No *immediate* need to apply high-dimensional gating for "discovery".
+  - Such approaches are suitable for analysis of secondary endpoints.
+ 
+### *Large* data sets.
+- Gating is tedious and subject to human error (this has been shown over and over).
+- We want to automate the repetitive tasks. Make them:
+  - *Robust and Reproducible*
+
+---
+
+## Automated Gating Methods Should Perform At Least as Well as Centralized Gating
+
+<img style="width:100%;", src="assets/img/combined_local_central_cv_plot.png">
+
+---
+
+## FlowCAP Participants (Lyoplate Challenge)
+
+### *DENSE* ( A. Brandes, Broad Institute )
+### *flowDensity* ( J. Taghiyar, BC Cancer Agency )
+### *OpenCyto* ( J. Ramey, FHCRC )
+### *emcytom* ( K. Wang, University of Queensland )
+### *FLOCK* ( R. Stanton, JCVI )
+### *Centralized Gating* ( Current best practice )
+
+---
+
+## FlowCAP III Gating Evaluation Criteria
+
+Assess *automated methods* relative to *central manual gating*.
+- **Variability**
+  - Coefficients of variation across centers
+- **Bias:**
+   $RMSD_{gpc} = \sqrt{\frac{\sum(y_{gcpr}-\mu_{mpc})}{R}}$
+- **Mixed Effects Model:**
+  $y_{gpcr}=\mu+\phi_{p}+\color{red}{\gamma_{g}}+\color{red}{\phi\gamma_{pg}}+(\phi\chi)_{pc}+\epsilon_{gpcr}$
+  - Fixed gating and cell population effects.
+  - Random center $\times$ cell population effects.
+  - Interested in *interaction* and *contrasts* of fixed effects.  $(\gamma_g + \phi\gamma_pg -\gamma_0 - \phi\gamma_{p0} = 0)$  
+An ideal automated gating method will have low bias and low variability for each population.
+
+---&twocol
+
+## Centralized Gating of the B-cell panel
+
+### flowWorkspace: Import Manually Gated Data from flowJo
+*http://www.github.com/RGLab/flowWorkspace* ([Bioconductor](http://bioconductor.org/packages/2.12/bioc/html/flowWorkspace.html))  
+Reproduce FlowJo gating in *R* from an exported workspace.
 
 
 
@@ -120,32 +170,77 @@ Reproduce FlowJo gating in *R* from an exported workspace.
 
 
 
+
+
+
+***left
 
 ```custom
 ws<-openWorkspace("./Data/Centralized T-cell.xml");
 G<-parseWorkspace(ws);
-plotGate(G[[1]],"24hi 38hi"); #Plot transitional gate
-plot(G[[1]]);           #Plot gating hierarchy
+plotGate(G[[1]]); #Plot all B-cell manual gates
 ```
-
-<img src="figure/plotws2.png", style="width: 100%; max-height: 50%; height: auto;">
+- Extract manual gates, population statistics and compare against automated gating.
 
 ***right
 
-<img src="figure/plotws1.png",  style="width: 100%; max-height=50%;">
+<div style="width:100%;">
+<img src="figure/opencyto1.png", style="position:relative;top:-25px;width: 90%; height: auto; max-heigh: 75%;">
+</div>
 
 ---
 
-## OpenCyto: A flexible framework for automated gating
+## B-cell Panel Variability
+<div align="center">
+<img src="figure/lyoplatePlots9.png", style="width: 75%; height: auto;">  
+</div>
+Cross center variability of automated gating methods is comparable to centralized gating.
+
+
+---
+
+
+
+
+
+
+
+## T-cell Panel Variability
+<div align="center">
+<img src="figure/lyoplatePlots8.png", style="width: 75%; height: auto;">
+</div>
+At least one method per panel matches the variability of centralized gating for all populations.
+
+---
+
+## B-cell Panel Bias
+<div align="center"><img src="figure/lyoplate2.png", style="width: auto; height: auto; max-width: 80%; max-height:90%;"></img></div>
+Three methods provided unbiased cell population estimates for the B-cell panel.
+
+---
+
+## T-cell Panel Bias
+<div align="center">
+<img src="figure/lyoplate1.png", style="width: auto; height: auto; max-width: 75%; max-height: 90%;"></img></div>
+
+Three methods were mostly unbiased, having difficulty with some rare or poorly resolved cell populations.
+
+---
+
+## OpenCyto Framework: Construct flexible gating pipelines
+
+### Goal: Make the best algorithms available for use.
 *http://www.github.com/RGLab/openCyto*
 
-Integrates *flowWorkspace* infrastructure with automated gating tools (*Bayesian flowClust*, *flowCore*, and others)
-- *Modular framework:* plug-in your own gating algorithms
-- *High-level automated gating*
+Integrates core R flow infrastructure with automated gating algorithms   
+(*Bayesian flowClust*, *flowCore*, *flowDensity*, *DENSE*)
+
+- *Modular architecture:* plug-in any gating algorithms.
+- *High-level description of gating schemes*
   - User defines *hierarchy* of cell populations and relevant markers
-  - Gating is *data-driven*. (User doesn't define *gates* just *cell populations*)
   - Higher-dimensional gating (e.g. >2D)  is available.  
-Framework abstracts away most of the R-coding.
+  
+**Framework abstracts away most of the R-coding.**
 
 ---
 
@@ -177,175 +272,22 @@ G<-gating(template,gs)
 
 ---
 
-## OpenCyto: View all gates
+## OpenCyto Framework: Automated Gates
+
+Makes complex algorithms easy to use.
 
 
 
 <div style="float: left;">
-<img src="figure/opencyto1.png", style="width: auto; max-width: 49%; height: auto;">
 <img src="figure/opencyto6.png", style="width: auto; max-width: 49%; height: auto;">
+<img src="assets/img/transitionalfit.png", style="width: auto; max-width: 49%; height: auto;">
 </div>
-<div style="float:left; color: red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right; color: red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-
----
-
-## Gating Hierarchies
-
-<div>
-<img  src="figure/opencyto3.png", style="width: auto; max-width: 49%; height: auto;">
-<img  src="figure/opencyto5.png", style="width: auto; max-width: 49%; height: auto;">
-</div>
-<div style="float:left; color:red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right; color:red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-
----
-
-## Transitional B-cell gates
-<div>
-<img src="figure/opencyto2.png", style="width: auto; max-width: 49%; height: auto;">
-<img src="figure/opencyto4.png", style="width: auto; max-width: 49%; height: auto;">
-</div>
-<div style="float:left; color:red;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspManual Gating</div><div style="float:right;color:red;">Automated Gating&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
-
-
---- &twocol
-
-## FlowCAP: Critical Assessment of Cell Population Identification Methods
-Three-year old series of workshops for benchmarking automated gating methods vs. manual gating
-
-***left
-
-### **FlowCAP I and II**
-Focus on high dimensional automated gating.  
-<img src="assets/img/NatMethods.png", width=400px, align=center>
-
-***right
-
-### **FlowCAP III**
-Focus on reproducibility, applicability to clinical trials.
-- Reproduce cell population statistics from standardized Lyoplate data with minimum variability and bias.
-- Predict vaccination status from ICS data.
-
----
-
-## Standardized Lyoplate Staining Panels
-
-<div>
-<img src="assets/img/LyoplateStainingPanels.png", style="width: auto; height: auto; max-width: 100%;">
-</div>
-
-<div style="text-align: right; color: black; font-size: 18px;">Maecker, McCoy, Nussenblatt, Nat Rev Immunol, 2012</div>
-
----
-
-## FlowCAP III: Lyoplate Standardized Gating
-**Identify Gating Methods with low variability and bias relative to centralized manual gating**
-
-<img src="assets/img/TcellScheme.png", style="max-height: 35%; max-width: 50%;"><img src="assets/img/BcellScheme.png", style="max-width: 50%; max-height: 35%;">
-
-- FlowCAP focused on the T-cell and B-cell panels.
-- 9 sites, 4 replicates of cryopreserved cells per site. 
-
----
-
-## Why Compare Against Manual Gating?
-
-### In clinical trials, the things we want to measure are well defined *a-priori*.
-- Flow assays are well defined.
-- Cell populations of interest are well defined.
-- No immediate need to go fishing with high-dimensional gating for "discovery".
- 
-### Generally large data sets.
-- Gating is tedious and subject to human error (this has been shown).
-- Automate the repetitive tasks. 
-  - *Robust*
-  - *Reproducible*
-
----
-
-## Centralized Gating Reduces Cell Population Variability
-
-<img style="width:100%;", src="assets/img/combined_local_central_cv_plot.png">
-
----
-
-## FlowCAP Participants (Lyoplate Challenge)
-
-### *DENSE* ( A. Brandes, Broad Institute )
-### *flowDensity* ( J. Taghiyar, BC Cancer Agency )
-### *OpenCyto* ( J. Ramey, FHCRC )
-### *emcytom* ( K. Wang, University of Queensland )
-### *FLOCK* ( R. Stanton, JCVI )
-### *Centralized Gating* ( Current best practice )
-
----
-
-## FlowCAP III Gating Evaluation Criteria
-
-Assess *automated methods* relative to *central manual gating*.
-- **Variability**
-  - Coefficients of variation across centers
-- **Bias:**
-   $RMSD_{gpc} = \sqrt{\frac{\sum(y_{gcpr}-\mu_{mpc})}{R}}$
-- **Mixed Effects Model:**
-  $y_{gpcr}=\mu+\phi_{p}+\color{red}{\gamma_{g}}+\color{red}{\phi\gamma_{pg}}+(\phi\chi)_{pc}+\epsilon_{gpcr}$
-  - Fixed gating and cell population effects.
-  - Random center $\times$ cell population effects.
-  - Interested in *interaction* and *contrasts* of fixed effects. ($\gamma_g + \phi\gamma_pg -\gamma_0 - \phi\gamma_{p0} = 0$)  
-An ideal automated gating method will have low bias and low variability for each population.
-
----
-
-
-
-
-
-
-
-## T-cell Panel Results
-
-<img src="figure/lyoplatePlots8.png", style="width: 100%; height: auto;">  
-Cross center variability of automated gating methods is comparable to centralized gating.
-
----
-
-## B-cell Panel Results
-
-<img src="figure/lyoplatePlots9.png", style="width: 100%; height: auto;">  
-At least one method per panel matches the variability of centralized gating for all populations.
-
----
-
-## Bias: T-cell panel
-<img src="figure/lyoplate1.png", style="width: auto; height: auto; max-width: 95%; max-height: 90%;"></img>
-
----
-
-## Bias: B-cell panel
-<img src="figure/lyoplate2.png", style="width: auto; height: auto; max-width: 95%; max-height:90%;"></img>
-
 
 --- &twocol
 
 ## Acknowledgements
 
 ***left
-
-### **R Flow Tools**
-*Bioconductor Flow Package Contributors*  
-<font color="blue">FHCRC</font><br>
-Raphael Gottardo  
-Mike Jiang  
-John Ramey  
-<font color="blue">BCCA</font><br>
-Ryan Brinkman  
-Nima Aghaeepour  
-Jafar Taghiyar
-<font color="blue">TreeStar</font><Br>
-Adam Triester  
-Jay Almarode  
-
-***right
-
 ### **FlowCAP**
 <font color="blue">Lyoplate Data</font><br>
 Holden Maecker  (Stanford)  
@@ -361,19 +303,30 @@ Nima Aghaeepour (Stanford, BCCA)
 *Thanks to all FlowCAP*  
 *Participants*  
 NIH and NIAID
+
+***right
+
+### **R Flow Tools**
+*Bioconductor Flow Package Contributors*  
+<font color="blue">FHCRC</font><br>
+Raphael Gottardo  
+Mike Jiang  
+John Ramey  
+<font color="blue">BCCA</font><br>
+Ryan Brinkman  
+Nima Aghaeepour  
+Jafar Taghiyar  
+<font color="blue">TreeStar</font><Br>
+Adam Triester  
+Jay Almarode  
+
 ---
 
-## Take Home Message
+## Take Home Messages
 
-#### There are automated gating algorithms that are sufficiently robust to be useful for data analysis *today*.   
-  - **DENSE** (Broad Institute), **flowDensity** (BCCA), **OpenCyto Framework** (FHCRC)
+### There are automated gating algorithms that are sufficiently robust to be useful for data analysis *today*.   
+  - **DENSE** (Broad Institute), **flowDensity** (BCCA), **OpenCyto** (FHCRC)
   
-#### A wealth of **FREE** open-source flow tools are available for R.
-- OpenCyto framework emphasizing ease of use.
-- Handling real-world data sets (*large studies*)
-- Access manually gated FlowJo data in R.
-    - (support for Mac, Windows, version X and older)
-    
-### There is now little reason not to start exploring your flow data in R.  
+### The tools are available to make them practical to use for your data.
 
-<p style="float:left; font-size:20px;position:absolute;bottom:10px;color:red;">Get these slides online: <a href="http://github.com/gfinak/Talks/tree/master/RFlowToolsFlowCAP">http://www.github.com/gfinak/Talks/RFlowToolsFlowCAP</a><br></p>
+<p style="float:left; font-size:20px;position:absolute;bottom:10px;color:red;">Get these slides online: <a href="http://github.com/gfinak/Talks/tree/master/LyoplateFlowCAP3">http://www.github.com/gfinak/Talks/LyoplateFlowCAP3</a><br></p>
