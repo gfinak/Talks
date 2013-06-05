@@ -17,5 +17,5 @@ For the talk on FlowCAP III Lyoplates
 - The Lyoplate results will be expanded.
 
 ## Links to presentations
-http://gfinak.github.io/Talks/LyoplateFlowCAP3/index.html
+http://gfinak.github.io/Talks/LyoplateFlowCAP3/index.html  
 http://gfinak.github.io/Talks/RFlowToolsFlowCAP/index.html
